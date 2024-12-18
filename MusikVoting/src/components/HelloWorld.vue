@@ -1,44 +1,34 @@
-<script setup>
-defineProps({
-  msg: {
-    type: String,
-    required: true,
-  },
-})
-</script>
-
 <template>
-  <div class="greetings">
-    <h1 class="green">{{ msg }}</h1>
-    <h3>
-      You’ve successfully created a project with
-      <a href="https://vite.dev/" target="_blank" rel="noopener">Vite</a> +
-      <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>.
-    </h3>
+  <div>
+    <button @click="handleButtonClick('Button 1')" class="btn">Button 1</button>
+    <button @click="handleButtonClick('Button 2')" class="btn">Button 2</button>
   </div>
 </template>
 
+<script>
+export default {
+  name: 'TwoButtons',
+  methods: {
+    handleButtonClick(buttonName) {
+      alert(`${buttonName} wurde geklickt!`)
+    },
+  },
+}
+</script>
+
 <style scoped>
-h1 {
-  font-weight: 500;
-  font-size: 2.6rem;
-  position: relative;
-  top: -10px;
+.btn {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #4caf50;
+  color: white;
 }
 
-h3 {
-  font-size: 1.2rem;
-}
-
-.greetings h1,
-.greetings h3 {
-  text-align: center;
-}
-
-@media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
-  }
+.btn:hover {
+  background-color: #45a049;
 }
 </style>
