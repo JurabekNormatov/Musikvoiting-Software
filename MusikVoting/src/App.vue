@@ -1,12 +1,10 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <h1>Vue.js mit 2 Buttons</h1>
-    <HelloWorld />
-  </header>
+  <router-view></router-view>
 </template>
 
-<style scoped></style>
+
+<script>
+export default {
+  name: 'App'
+};
+</script>
