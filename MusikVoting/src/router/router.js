@@ -1,11 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'; // Новый API Vue Router
 import Gastgeber from '@/views/Gastgeber.vue';
 import Gast from '@/views/Gast.vue';
+import HomePage from '@/views/HomePage.vue';
 
 const routes = [
-  {
+    {
     path: '/',
-    redirect: '/gast',
+    name: 'HomePage',
+    component: HomePage,
   },
   {
     path: '/gastgeber',

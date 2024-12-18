@@ -37,3 +37,11 @@
   gap: 10px;
   height: 100vh;
 }
+
+.button-container {
+  width: 20%;
+}
+
+.btn-home {
+  width: 100%;
+}
