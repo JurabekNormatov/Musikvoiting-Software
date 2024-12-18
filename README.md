@@ -1,4 +1,0 @@
-# Musikvoiting-SoftwareÌ
-
-Berufsschule
-Test
