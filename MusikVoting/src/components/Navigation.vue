@@ -5,7 +5,7 @@
       <button @click="goToGastgeber" class="btn btn-home">Gastgeber</button>
     </div>
     <div>
-      <button @click="goToGast"  class="btn btn-home">Gast</button>
+      <button @click="goToGastAnmeldung"  class="btn btn-home">Gast</button>
     </div>
   </div>
 
@@ -21,8 +21,8 @@ export default {
     goToGastgeber() {
       this.$router.push({ name: 'Gastgeber' });
     },
-    goToGast() {
-      this.$router.push({ name: 'Gast' });
+    goToGastAnmeldung() {
+      this.$router.push({ name: 'GastAnmeldung' });
     },
   },
 

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'; // Новый API V
 import Gastgeber from '@/views/Gastgeber.vue';
 import Gast from '@/views/Gast.vue';
 import HomePage from '@/views/HomePage.vue';
+import GastAnmeldung from '@/views/GastAnmeldung.vue';
 
 const routes = [
     {
@@ -18,6 +19,11 @@ const routes = [
     path: '/gast',
     name: 'Gast',
     component: Gast,
+  },
+  {
+    path: '/anmelden',
+    name: 'GastAnmeldung',
+    component: GastAnmeldung,
   },
 ];
 
