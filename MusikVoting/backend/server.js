@@ -52,24 +52,22 @@ app.get('/api/playlist', (req, res) => {
     });
 });
 
-app.post('/api/vote', (req, res) => {
-    const { songId } = req.body;
+app.post('/api/gast', (req, res) => {
+    const { vname, nname } = req.body;
 
-    if (!songId) {
-        return res.status(400).send('Song ID ist erforderlich.');
+    if (!vname || !nname) {
+        return res.status(400).send('Vorname und Nachname sind erforderlich.');
     }
 
-    const sql = 'UPDATE T_Musikwunsch SET votes_count = votes_count + 1 WHERE song_id = ?';
-    db.query(sql, [songId], (err, results) => {
+    const sql = 'INSERT INTO T_Gast (vname, nname) VALUES (?, ?)';
+    db.query(sql, [vname, nname], (err, results) => {
         if (err) {
-            console.error('Fehler beim Voting:', err);
-            return res.status(500).send('Fehler beim Voting.');
+            console.error('Fehler bei der Anmeldung:', err);
+            return res.status(500).send('Fehler bei der Anmeldung.');
         }
-
-        res.status(200).json({ message: 'Vote erfolgreich.', affectedRows: results.affectedRows });
+        res.status(201).json({ message: 'Gast erfolgreich angemeldet.', gastId: results.insertId });
     });
 });
-
 
 app.listen(port, () => {
     console.log(`Backend läuft auf http://localhost:${port}`);
