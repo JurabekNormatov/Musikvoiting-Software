@@ -53,7 +53,7 @@ app.get('/api/playlist', (req, res) => {
 });
 
 app.post('/api/gast', (req, res) => {
-    const { vname, nname } = req.body;
+    let { vname, nname } = req.body;
     vname = vname.trim();
     nname = nname.trim();
 
