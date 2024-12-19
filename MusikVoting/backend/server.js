@@ -36,12 +36,12 @@ app.get('/api/musikwuensche', (req, res) => {
 
 app.get('/api/playlist', (req, res) => {
     const sql = `
-        SELECT ps.position, m.titel, m.genre, m.bandname
-        FROM T_Playlist_Song ps
-        JOIN T_Musikwunsch m ON ps.song_id = m.song_id
-        WHERE ps.position IS NOT NULL
-        ORDER BY ps.position
-    `;
+            SELECT ps.position, m.titel, m.genre, m.bandname
+            FROM T_Playlist_Song ps
+            JOIN T_Musikwunsch m ON ps.song_id = m.song_id
+            WHERE ps.position IS NOT NULL
+            ORDER BY ps.position
+        `;
     db.query(sql, (err, results) => {
         if (err) {
             console.error('Fehler bei der Abfrage:', err);
@@ -81,6 +81,50 @@ app.post('/api/gast', (req, res) => {
 
             res.status(201).json({ message: 'Gast erfolgreich angemeldet.', gastId: results.insertId });
         });
+    });
+});
+
+app.post('/api/vote', (req, res) => {
+    const { songId } = req.body;
+
+    if (!songId) {
+        return res.status(400).send('Song-ID ist erforderlich.');
+    }
+
+    const updateSql = `
+        UPDATE T_Musikwunsch 
+        SET votes_count = votes_count + 1
+        WHERE song_id = ?
+    `;
+
+    db.query(updateSql, [songId], (err, results) => {
+        if (err) {
+            console.error('Fehler beim Hinzufügen eines Votes:', err);
+            return res.status(500).send('Fehler beim Hinzufügen eines Votes.');
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).send('Song nicht gefunden.');
+        }
+
+        res.status(200).json({ message: 'Vote erfolgreich hinzugefügt.' });
+    });
+});
+
+app.get('/api/top-songs', (req, res) => {
+    const sql = `
+            SELECT * 
+            FROM T_Musikwunsch
+            ORDER BY votes_count DESC
+            LIMIT 5
+        `;
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Fehler bei der Abfrage:', err);
+            res.status(500).send('Fehler bei der Abfrage.');
+        } else {
+            res.json(results);
+        }
     });
 });
 
