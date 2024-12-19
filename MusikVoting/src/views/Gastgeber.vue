@@ -6,6 +6,7 @@
     <div>
       <button @click="handleButtonClick('Add')" class="btn">Add</button>
       <button @click="handleButtonClick('Delete')" class="btn">Delete</button>
+      <button @click="goToTop5" class="btn">Top 5</button>
     </div>
   </div>
 </template>
@@ -18,6 +19,9 @@ export default {
   name: 'Gastgeber',
   methods: {
     handleButtonClick,
+    goToTop5() {
+      this.$router.push({ name: 'Liederlist' });
+    },
   },
 }
 </script>
