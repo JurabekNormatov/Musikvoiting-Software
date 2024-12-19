@@ -2,6 +2,9 @@ import Gast from '@/views/Gast.vue';
 import GastAnmeldung from '@/views/GastAnmeldung.vue';
 import Gastgeber from '@/views/Gastgeber.vue';
 import HomePage from '@/views/HomePage.vue';
+import Liederlist from '@/views/Liederlist.vue';
+import VotingPage from '@/views/VotingPage.vue';
+import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
   {
