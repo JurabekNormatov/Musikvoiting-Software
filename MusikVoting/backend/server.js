@@ -6,6 +6,7 @@ const app = express();
 const port = 3000;
 
 app.use(cors());
+app.use(express.json());
 
 const db = mysql.createConnection({
     database: 'MusikVotingDB',
@@ -22,7 +23,7 @@ db.connect((err) => {
 });
 
 app.get('/api/musikwuensche', (req, res) => {
-    const sql = 'SELECT * FROM T_Musikwunsch ORDER BY votes_count DESC';
+    const sql = 'SELECT * FROM T_Musikwunsch';
     db.query(sql, (err, results) => {
         if (err) {
             console.error('Fehler bei der Abfrage:', err);
@@ -50,6 +51,25 @@ app.get('/api/playlist', (req, res) => {
         }
     });
 });
+
+app.post('/api/vote', (req, res) => {
+    const { songId } = req.body;
+
+    if (!songId) {
+        return res.status(400).send('Song ID ist erforderlich.');
+    }
+
+    const sql = 'UPDATE T_Musikwunsch SET votes_count = votes_count + 1 WHERE song_id = ?';
+    db.query(sql, [songId], (err, results) => {
+        if (err) {
+            console.error('Fehler beim Voting:', err);
+            return res.status(500).send('Fehler beim Voting.');
+        }
+
+        res.status(200).json({ message: 'Vote erfolgreich.', affectedRows: results.affectedRows });
+    });
+});
+
 
 app.listen(port, () => {
     console.log(`Backend läuft auf http://localhost:${port}`);
