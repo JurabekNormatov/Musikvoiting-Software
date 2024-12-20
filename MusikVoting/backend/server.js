@@ -155,6 +155,27 @@ app.delete('/api/musikwuensche/:songId', (req, res) => {
     });
 });
 
+app.post('/api/playlist', (req, res) => {
+    const { name, gastgeberId } = req.body;
+
+    if (!name || !gastgeberId) {
+        return res.status(400).send('Name der Playlist und Gastgeber-ID sind erforderlich');
+    }
+
+    const insertSql = `
+        INSERT INTO T_Playlist (f_gastgeber_id, name)
+        VALUES (?, ?)
+    `;
+
+    db.query(insertSql, [gastgeberId, name], (err, results) => {
+        if (err) {
+            console.error('Fehler beim Hinzufügen einer Playlist', err);
+            return res.status(500).send('Hinzufügen einer Playlist fehlgeschlagen');
+        }
+
+        res.status(201).json({ message: 'Playlist hinzugefügt', playlistId: results.insertId });
+    });
+});
 
 
 
