@@ -1,14 +1,13 @@
 <template>
-  <div class="flex-container">
-  <div class="button-container">
-    <div> 
-      <button @click="goToGastgeber" class="btn btn-home">Gastgeber</button>
-    </div>
+  <div class="d-flex justify-content-center align-items-center vh-100">
     <div>
-      <button @click="goToGastAnmeldung"  class="btn btn-home">Gast</button>
+      <div class="mb-3">
+        <button @click="goToGastgeber" class="btn btn-success w-100">Gastgeber</button>
+      </div>
+      <div>
+        <button @click="goToGastAnmeldung" class="btn btn-success w-100">Gast</button>
+      </div>
     </div>
-  </div>
-
   </div>
 </template>
 

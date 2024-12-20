@@ -1,6 +1,6 @@
 <template>
   <div class="flex-container">
-    <table class="table">
+    <table class="table border-success">
       <thead>
         <tr>
           <th>#</th>
@@ -19,7 +19,7 @@
           <td>{{ song.bandname }}</td>
           <td>{{ song.votes_count }}</td>
           <td>
-            <button @click="voteSong(song.song_id)" class="vote-button">Vote Up</button>
+            <button @click="voteSong(song.song_id)" class="btn btn-success">Vote Up</button>
           </td>
         </tr>
       </tbody>
@@ -61,35 +61,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.flex-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.table {
-  border-collapse: collapse;
-  width: 80%;
-}
-
-.table th,
-.table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-.vote-button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-.vote-button:hover {
-  background-color: #45a049;
-}
-</style>

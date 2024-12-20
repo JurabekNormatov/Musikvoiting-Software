@@ -1,12 +1,12 @@
 <template>
-  <div class="flex-container width-20">
+  <div class="d-flex flex-column align-items-center justify-content-center vh-100">
     <div> 
-    <input type="text" placeholder="Playlist Name" class="input-text"/>
+    <input type="text" placeholder="Playlist Name" class="form-control mb-3 shadow-none border-success"/>
     </div>
-    <div>
-      <button @click="handleButtonClick('Add')" class="btn">Add</button>
-      <button @click="handleButtonClick('Delete')" class="btn">Delete</button>
-      <button @click="goToTop5" class="btn">Top 5</button>
+    <div class="d-flex flex-wrap gap-2 justify-content-center">
+      <button @click="handleButtonClick('Add')" class="btn btn-success">Add</button>
+      <button @click="handleButtonClick('Delete')" class="btn btn-success">Delete</button>
+      <button @click="goToTop5" class="btn btn-success">Top 5</button>
     </div>
   </div>
 </template>

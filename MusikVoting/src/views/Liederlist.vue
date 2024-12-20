@@ -1,7 +1,8 @@
 <template>
   <div class="flex-container">
-    <h2 class="title">Top 5 Lieder mit den meisten Votes</h2>
-    <table class="table">
+    <h2 class="text-center">Top 5 Lieder mit den meisten Votes</h2>
+    <h3 class="text-center">Playlistname: </h3>
+    <table class="table border-success">
       <thead>
         <tr>
           <th>#</th>
@@ -49,44 +50,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.flex-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.title {
-  margin-bottom: 20px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-}
-
-.table {
-  border-collapse: collapse;
-  width: 80%;
-  text-align: left;
-}
-
-.table th,
-.table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-.table th {
-  background-color: #f4f4f4;
-  font-weight: bold;
-}
-
-.table tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.table tr:hover {
-  background-color: #f1f1f1;
-}
-</style>
