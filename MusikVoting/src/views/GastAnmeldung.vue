@@ -1,5 +1,9 @@
+<script setup>
+  import HomeLink from '../components/HomeLink.vue'
+</script>
+
 <template>
-  <div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="d-flex justify-content-center align-items-center vh-100 flex-column">
     <div class="card p-4 shadow-lg" style="width: 400px;">
       <p v-if="errorMessage" class="text-danger text-center mb-3">{{ errorMessage }}</p>
 
@@ -27,6 +31,7 @@
         <button type="submit" class="btn btn-success w-100">Anmelden</button>
       </form>
     </div>
+      <HomeLink />
   </div>
 </template>
 

@@ -1,5 +1,9 @@
+<script setup>
+  import HomeLink from '../components/HomeLink.vue'
+</script>
+
 <template>
-  <div class="flex-container">
+  <div class="vh-100">
     <table class="table border-success">
       <thead>
         <tr>
@@ -24,6 +28,7 @@
         </tr>
       </tbody>
     </table>
+    <HomeLink />
   </div>
 </template>
 

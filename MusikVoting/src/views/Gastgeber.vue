@@ -1,3 +1,8 @@
+<script setup>
+  import HomeLink from '../components/HomeLink.vue'
+</script>
+
+
 <template>
   <div class="d-flex flex-column align-items-center justify-content-center vh-100">
     <div> 
@@ -8,7 +13,9 @@
       <button @click="handleButtonClick('Delete')" class="btn btn-success">Delete</button>
       <button @click="goToTop5" class="btn btn-success">Top 5</button>
     </div>
+    <HomeLink />
   </div>
+
 </template>
 
 <script>

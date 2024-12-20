@@ -1,3 +1,7 @@
+<script setup>
+  import HomeLink from '../components/HomeLink.vue'
+</script>
+
 <template>
   <div class="d-flex flex-column align-items-center justify-content-center vh-100">
     <div class="p-4" style="width: 400px;">
@@ -13,7 +17,9 @@
         <button @click="goToVoting" class="btn btn-success">Liste der Lieder</button>
         <button @click="goToTop5" class="btn btn-success">Top 5</button>
       </div>
+      <HomeLink />
     </div>
+
   </div>
 </template>
 
