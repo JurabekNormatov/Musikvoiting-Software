@@ -1,11 +1,11 @@
 <script setup>
-  import HomeLink from '../components/HomeLink.vue'
+import HomeLink from '../components/HomeLink.vue'
 </script>
 
 <template>
   <div class="vh-100">
     <h2 class="text-center">Top 5 Lieder mit den meisten Votes</h2>
-    <h3 class="text-center">Playlistname: </h3>
+    <h3 class="text-center">Playlistname:</h3>
     <table class="table border-success">
       <thead>
         <tr>
@@ -55,3 +55,5 @@ export default {
   },
 }
 </script>
+
+<style scoped></style>

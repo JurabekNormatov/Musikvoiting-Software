@@ -1,5 +1,5 @@
 <script setup>
-  import HomeLink from '../components/HomeLink.vue'
+import HomeLink from '../components/HomeLink.vue'
 </script>
 
 <template>
@@ -13,6 +13,7 @@
           <th>Bandname</th>
           <th>Votes</th>
           <th>Aktionen</th>
+          <th>Löschen</th>
         </tr>
       </thead>
       <tbody>

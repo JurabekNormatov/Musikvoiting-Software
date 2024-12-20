@@ -128,6 +128,35 @@ app.get('/api/top-songs', (req, res) => {
     });
 });
 
+app.delete('/api/musikwuensche/:songId', (req, res) => {
+    const songId = req.params.songId;
+
+    const deleteVotesSql = 'DELETE FROM T_Vote WHERE f_song_id = ?';
+    const deleteSongSql = 'DELETE FROM T_Musikwunsch WHERE song_id = ?';
+
+    db.query(deleteVotesSql, [songId], (err, voteResults) => {
+        if (err) {
+            console.error('Fehler beim Löschen der Votes:', err);
+            return res.status(500).send('Fehler beim Löschen der Votes.');
+        }
+
+        db.query(deleteSongSql, [songId], (err, songResults) => {
+            if (err) {
+                console.error('Fehler beim Löschen des Songs:', err);
+                return res.status(500).send('Fehler beim Löschen des Songs.');
+            }
+
+            if (songResults.affectedRows === 0) {
+                return res.status(404).send('Song nicht gefunden.');
+            }
+
+            res.status(200).json({ message: 'Song erfolgreich gelöscht.' });
+        });
+    });
+});
+
+
+
 
 app.listen(port, () => {
     console.log(`Backend läuft auf http://localhost:${port}`);
