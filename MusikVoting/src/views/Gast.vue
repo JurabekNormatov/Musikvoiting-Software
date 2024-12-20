@@ -67,9 +67,6 @@ export default {
     },
 
     async deleteSong(songId) {
-      const confirmDelete = confirm('Möchten Sie diesen Song wirklich löschen?')
-      if (!confirmDelete) return
-
       try {
         const response = await axios.delete(`http://localhost:3000/api/musikwuensche/${songId}`)
         console.log('Song erfolgreich gelöscht:', response.data)
