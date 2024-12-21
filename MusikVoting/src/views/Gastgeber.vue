@@ -33,6 +33,9 @@ export default {
     };
   },
   methods: {
+    goToTop5() {
+      this.$router.push({ name: 'Liederlist' });
+    },
     handleButtonClick(action) {
       if (action === 'Add') {
         this.addPlaylist();
