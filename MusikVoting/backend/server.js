@@ -178,6 +178,27 @@ app.post('/api/playlist', (req, res) => {
 });
 
 
+app.get('/api/playlist/latest', (req, res) => {
+    const sql = `
+        SELECT *
+        FROM T_Playlist
+        ORDER BY playlist_id DESC
+        LIMIT 1
+    `;
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.error('Fehler beim Abrufen der letzten Playlist:', err);
+            return res.status(500).json({ error: err.message });
+        }
+        if (result.length === 0) {
+            console.log('⚠ Keine Playlist gefunden.');
+            return res.status(404).json({ message: "Keine Playlist gefunden" });
+        }
+        console.log('✅ Letzte Playlist:', result[0]);
+        res.json(result[0]);
+    });
+});
+
 
 app.listen(port, () => {
     console.log(`Backend läuft auf http://localhost:${port}`);

@@ -5,7 +5,7 @@ import HomeLink from '../components/HomeLink.vue'
 <template>
   <div class="vh-100">
     <h2 class="text-center">Top 5 Lieder mit den meisten Votes</h2>
-    <h3 class="text-center">Playlistname:</h3>
+    <h3 class="text-center">Playlistname: {{ playListName.name }}</h3>
     <table class="table border-success">
       <thead>
         <tr>
@@ -38,6 +38,7 @@ export default {
   data() {
     return {
       topSongs: [],
+      playListName: '',
     }
   },
   methods: {
@@ -49,9 +50,19 @@ export default {
         console.error('Fehler beim Abrufen der Top-Songs:', error)
       }
     },
+
+    async fetchLastPLaylist() {
+      try {
+        const response = await axios.get('http://localhost:3000/api/playlist/latest')
+        this.playListName = response.data
+      } catch (error) {
+        console.error('Fehler beim Abrufen der letzten Playlist:', error)
+      }
+    },
   },
   mounted() {
     this.fetchTopSongs()
+    this.fetchLastPLaylist()
   },
 }
 </script>
