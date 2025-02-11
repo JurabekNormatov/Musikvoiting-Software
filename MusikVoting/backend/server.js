@@ -162,18 +162,53 @@ app.post('/api/playlist', (req, res) => {
         return res.status(400).send('Name der Playlist und Gastgeber-ID sind erforderlich');
     }
 
-    const insertSql = `
-        INSERT INTO T_Playlist (f_gastgeber_id, name)
-        VALUES (?, ?)
+    const checkSql = `
+        SELECT * FROM T_Playlist 
+        WHERE f_gastgeber_id = ? AND name = ?
     `;
 
-    db.query(insertSql, [gastgeberId, name], (err, results) => {
+    db.query(checkSql, [gastgeberId, name], (err, results) => {
         if (err) {
-            console.error('Fehler beim Hinzufügen einer Playlist', err);
-            return res.status(500).send('Hinzufügen einer Playlist fehlgeschlagen');
+            console.error('Fehler bei der Überprüfung der Playlist', err);
+            return res.status(500).send('Fehler bei der Überprüfung der Playlist');
         }
 
-        res.status(201).json({ message: 'Playlist hinzugefügt', playlistId: results.insertId });
+        if (results.length > 0) {
+            return res.status(409).send('Diese Playlist existiert bereits');
+        }
+
+        const insertSql = `
+            INSERT INTO T_Playlist (f_gastgeber_id, name)
+            VALUES (?, ?)
+        `;
+
+        db.query(insertSql, [gastgeberId, name], (err, results) => {
+            if (err) {
+                console.error('Fehler beim Hinzufügen einer Playlist', err);
+                return res.status(500).send('Hinzufügen einer Playlist fehlgeschlagen');
+            }
+
+            res.status(201).json({ message: 'Playlist hinzugefügt', playlistId: results.insertId });
+        });
+    });
+});
+
+app.get('/api/playlist/check', (req, res) => {
+    const { name, gastgeberId } = req.query;
+
+    if (!name || !gastgeberId) {
+        return res.status(400).send('Name und Gastgeber-ID sind erforderlich');
+    }
+
+    const checkSql = `SELECT * FROM T_Playlist WHERE f_gastgeber_id = ? AND name = ?`;
+
+    db.query(checkSql, [gastgeberId, name], (err, results) => {
+        if (err) {
+            console.error('Fehler bei der Überprüfung der Playlist:', err);
+            return res.status(500).send('Fehler bei der Überprüfung der Playlist');
+        }
+
+        res.json({ exists: results.length > 0 });
     });
 });
 
