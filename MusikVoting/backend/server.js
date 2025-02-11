@@ -234,6 +234,38 @@ app.get('/api/playlist/latest', (req, res) => {
     });
 });
 
+app.delete('/api/playlist', (req, res) => {
+    const { name, gastgeberId } = req.body;
+
+    if (!name || !gastgeberId) {
+        return res.status(400).send('Name und Gastgeber-ID sind erforderlich');
+    }
+
+    const checkSql = `SELECT * FROM T_Playlist WHERE f_gastgeber_id = ? AND name = ?`;
+
+    db.query(checkSql, [gastgeberId, name], (err, results) => {
+        if (err) {
+            console.error('Fehler bei der Überprüfung der Playlist:', err);
+            return res.status(500).send('Fehler bei der Überprüfung der Playlist');
+        }
+
+        if (results.length === 0) {
+            return res.status(404).send('Diese Playlist existiert nicht');
+        }
+
+        const deleteSql = `DELETE FROM T_Playlist WHERE f_gastgeber_id = ? AND name = ?`;
+
+        db.query(deleteSql, [gastgeberId, name], (err, results) => {
+            if (err) {
+                console.error('Fehler beim Löschen der Playlist:', err);
+                return res.status(500).send('Löschen der Playlist fehlgeschlagen');
+            }
+
+            res.status(200).json({ message: 'Playlist gelöscht' });
+        });
+    });
+});
+
 
 app.listen(port, () => {
     console.log(`Backend läuft auf http://localhost:${port}`);

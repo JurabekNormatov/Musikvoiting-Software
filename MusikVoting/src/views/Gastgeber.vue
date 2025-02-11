@@ -36,9 +36,11 @@ export default {
       this.$router.push({ name: 'Liederlist' })
     },
     handleButtonClick(action) {
-      if (action === 'Add') {
-        this.addPlaylist()
-      }
+        if (action === 'Add') {
+            this.addPlaylist();
+        } else if (action === 'Delete') {
+            this.deletePlaylist();
+        }
     },
     async addPlaylist() {
       try {
@@ -66,6 +68,32 @@ export default {
         console.error('Fehler beim Hinzufügen einer Playlist', error)
         alert('Hinzufügen einer Playlist fehlgeschlagen')
       }
+    },
+    async deletePlaylist() {
+        try {
+            if (!this.playlistName.trim()) {
+                return;
+            }
+
+            const checkResponse = await axios.get(`http://localhost:3000/api/playlist/check`, {
+                params: { name: this.playlistName.trim(), gastgeberId: 1 },
+            });
+
+            if (!checkResponse.data.exists) {
+                alert('Diese Playlist existiert nicht');
+                return;
+            }
+
+            await axios.delete(`http://localhost:3000/api/playlist`, {
+                data: { name: this.playlistName.trim(), gastgeberId: 1 },
+            });
+
+            alert('Playlist gelöscht');
+            this.playlistName = '';
+        } catch (error) {
+            console.error('Fehler beim Löschen der Playlist', error);
+            alert('Löschen der Playlist fehlgeschlagen');
+        }
     },
   },
 }
