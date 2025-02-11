@@ -1,0 +1,63 @@
+body {
+    background: white;
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 200px;
+    padding: 20px;
+    
+};
+.box1 {
+background: orange;
+width: 600px;
+margin-left: auto;
+margin-right: auto;
+margin-top: 200px;
+padding: 20px;
+
+};
+.formcontrol {
+    background: white;
+};
+/* Container für das gesamte Layout */
+div1 {
+    background-color: grey;
+    width: 80%; /* Oder eine fixe Breite nach Wunsch */
+    margin: 0 auto; /* Zentriert das div1 horizontal */
+    padding: 20px; /* Abstand innen */
+    box-sizing: border-box; /* Um das Padding korrekt zu berechnen */
+  }
+  
+  /* Formularfeld innerhalb von div1 */
+  input[type="text"] {
+    padding: 20px;
+    width: 100%; /* Macht das Eingabefeld so breit wie der Container */
+    box-sizing: border-box; /* Um das Padding korrekt zu berechnen */
+  }
+  
+  /* Div2 und Div3 nebeneinander */
+  .box2, .box3 {
+    display: inline-block; /* Positioniert sie nebeneinander */
+    vertical-align: top; /* Richtet sie oben aus */
+    width: 50%; /* Gib beiden divs fast die Hälfte der Breite */
+  }
+  
+  /* Stile für die Buttons in div2 (linksbündig) */
+  .box2 button {
+    display: block;
+    width: 100%; /* Macht die Buttons so breit wie der div2-Container */
+    margin-top: 10px; /* Abstand zwischen den Buttons */
+    text-align: left; /* Links ausgerichtet */
+    background-color: darkgray;
+    color:white;
+  }
+  
+  /* Stile für die Buttons in div3 (rechtsbündig) */
+  .box3 button {
+    display: block;
+    width: 100%; /* Macht die Buttons so breit wie der div3-Container */
+    margin-top: 10px; /* Abstand zwischen den Buttons */
+    text-align: right; /* Rechts ausgerichtet */
+    background-color: darkgray;
+    color:white;
+  }

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="box">
     <div>
       <div class="mb-3">
         <button @click="goToGastgeber" class="btn btn-success w-100">Gastgeber</button>

@@ -3,7 +3,7 @@ import HomeLink from '../components/HomeLink.vue'
 </script>
 
 <template>
-  <div class="d-flex justify-content-center align-items-center vh-100 flex-column">
+  <div class="box1">
     <div class="card p-4 shadow-lg" style="width: 400px">
       <p v-if="errorMessage" class="text-danger text-center mb-3">{{ errorMessage }}</p>
 
@@ -15,7 +15,7 @@ import HomeLink from '../components/HomeLink.vue'
             type="text"
             v-model="gast.vname"
             placeholder="Vorname"
-            class="form-control custom-input shadow-none border-success"
+            class="formcontrol"
           />
         </div>
 
