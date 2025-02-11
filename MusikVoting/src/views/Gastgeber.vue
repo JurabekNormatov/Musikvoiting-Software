@@ -46,7 +46,16 @@ export default {
           return
         }
 
-        const response = await axios.post('http://localhost:3000/api/playlist', {
+        const checkResponse = await axios.get(`http://localhost:3000/api/playlist/check`, {
+          params: { name: this.playlistName.trim(), gastgeberId: 1 },
+        })
+
+        if (checkResponse.data.exists) {
+          alert('Diese Playlist existiert bereits')
+          return
+        }
+
+        await axios.post('http://localhost:3000/api/playlist', {
           name: this.playlistName.trim(),
           gastgeberId: 1,
         })
