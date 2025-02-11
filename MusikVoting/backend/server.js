@@ -5,12 +5,15 @@ const cors = require('cors');
 const app = express();
 const port = 3000;
 
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 app.use(cors());
 app.use(express.json());
 
 const db = mysql.createConnection({
     database: 'MusikVotingDB',
-    user: 'root',
+    user: 'root1',
     host: 'localhost'
 });
 
@@ -52,36 +55,44 @@ app.get('/api/playlist', (req, res) => {
     });
 });
 
-app.post('/api/gast', (req, res) => {
-    let { vname, nname } = req.body;
+app.post('/api/gast', async (req, res) => {
+    let { vname, nname, password } = req.body;
     vname = vname.trim();
     nname = nname.trim();
 
-    if (!vname || !nname) {
-        return res.status(400).send('Vorname und Nachname sind erforderlich.');
+    if (!vname || !nname || !password) {
+        return res.status(400).send('Vorname, Nachname und Kennwort sind erforderlich.');
     }
 
-    const checkSql = 'SELECT * FROM T_Gast WHERE vname = ? AND nname = ?';
-    db.query(checkSql, [vname, nname], (err, results) => {
-        if (err) {
-            console.error('Fehler bei der Überprüfung des Nutzers:', err);
-            return res.status(500).send('Fehler bei der Überprüfung des Nutzers.');
-        }
-
-        if (results.length > 0) {
-            return res.status(409).send('Nutzer mit diesem Namen existiert bereits.');
-        }
-
-        const insertSql = 'INSERT INTO T_Gast (vname, nname) VALUES (?, ?)';
-        db.query(insertSql, [vname, nname], (err, results) => {
+    try {
+        const checkSql = 'SELECT * FROM T_Gast WHERE vname = ? AND nname = ?';
+        db.query(checkSql, [vname, nname], async (err, results) => {
             if (err) {
-                console.error('Fehler bei der Anmeldung:', err);
-                return res.status(500).send('Fehler bei der Anmeldung.');
+                console.error('Fehler bei der Überprüfung des Nutzers:', err);
+                return res.status(500).send('Fehler bei der Überprüfung des Nutzers.');
             }
 
-            res.status(201).json({ message: 'Gast erfolgreich angemeldet.', gastId: results.insertId });
+            if (results.length > 0) {
+                return res.status(409).send('Nutzer mit diesem Namen existiert bereits.');
+            }
+
+            // Passwort hashen
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+            const insertSql = 'INSERT INTO T_Gast (vname, nname, password_hash) VALUES (?, ?, ?)';
+            db.query(insertSql, [vname, nname, hashedPassword], (err, results) => {
+                if (err) {
+                    console.error('Fehler bei der Anmeldung:', err);
+                    return res.status(500).send('Fehler bei der Anmeldung.');
+                }
+
+                res.status(201).json({ message: 'Gast erfolgreich angemeldet.', gastId: results.insertId });
+            });
         });
-    });
+    } catch (error) {
+        console.error('Serverfehler:', error);
+        res.status(500).send('Interner Serverfehler.');
+    }
 });
 
 app.post('/api/vote', (req, res) => {

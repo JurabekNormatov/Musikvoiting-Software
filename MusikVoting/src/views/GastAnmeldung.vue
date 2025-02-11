@@ -28,6 +28,15 @@ import HomeLink from '../components/HomeLink.vue'
           />
         </div>
 
+        <div class="mb-3">
+          <input
+            type="password"
+            v-model="gast.password"
+            placeholder="Kennwort"
+            class="form-control custom-input shadow-none border-success"
+          />    
+        </div>
+
         <button type="submit" class="btn btn-success w-100">Anmelden</button>
       </form>
     </div>
