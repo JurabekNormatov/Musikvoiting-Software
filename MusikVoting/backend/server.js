@@ -13,7 +13,7 @@ app.use(express.json());
 
 const db = mysql.createConnection({
     database: 'MusikVotingDB',
-    user: 'root1',
+    user: 'root',
     host: 'localhost'
 });
 
@@ -73,19 +73,31 @@ app.post('/api/gast', async (req, res) => {
             }
 
             if (results.length > 0) {
-                return res.status(409).send('Nutzer mit diesem Namen existiert bereits.');
+                // Nutzer existiert bereits → Passwort überprüfen
+                const user = results[0];
+                const passwordMatch = await bcrypt.compare(password, user.password_hash);
+
+                if (passwordMatch) {
+                    delete req.body.password;
+                    return res.status(200).json({
+                        message: 'Login erfolgreich!',
+                        gastId: user.gast_id
+                    });
+                } else {
+                    return res.status(401).send('Falsches Passwort.');
+                }
             }
 
-            // Passwort hashen
+            // Nutzer existiert nicht → Neuen Nutzer registrieren
             const hashedPassword = await bcrypt.hash(password, saltRounds);
-
             const insertSql = 'INSERT INTO T_Gast (vname, nname, password_hash) VALUES (?, ?, ?)';
+
             db.query(insertSql, [vname, nname, hashedPassword], (err, results) => {
                 if (err) {
                     console.error('Fehler bei der Anmeldung:', err);
                     return res.status(500).send('Fehler bei der Anmeldung.');
                 }
-
+                delete req.body.password;
                 res.status(201).json({ message: 'Gast erfolgreich angemeldet.', gastId: results.insertId });
             });
         });
@@ -277,6 +289,55 @@ app.delete('/api/playlist', (req, res) => {
     });
 });
 
+app.post('/api/change-password', async (req, res) => {
+    let { vname, nname, oldPassword, newPassword } = req.body;
+
+    vname = vname.trim();
+    nname = nname.trim();
+    oldPassword.bcrypt
+
+    if (!vname || !nname || !oldPassword || !newPassword) {
+        return res.status(400).send('Vorname, Nachname, altes und neues Passwort sind erforderlich.');
+    }
+
+    try {
+        const getUserSql = 'SELECT * FROM T_Gast WHERE vname = ? AND nname = ?';
+        db.query(getUserSql, [vname, nname], async (err, results) => {
+            if (err) {
+                console.error('Fehler beim Abrufen des Nutzers:', err);
+                return res.status(500).send('Fehler beim Abrufen des Nutzers.');
+            }
+
+            if (results.length === 0) {
+                return res.status(404).send('Nutzer nicht gefunden.');
+            }
+
+            const user = results[0];
+
+            // Passwort überprüfen
+            const passwordMatch = await bcrypt.compare(oldPassword, user.password_hash);
+            if (!passwordMatch) {
+                return res.status(401).send('Altes Passwort ist falsch.');
+            }
+
+            // Setzen neues Passworts 
+            const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+
+            const updateSql = 'UPDATE T_Gast SET password_hash = ? WHERE vname = ? AND nname = ?';
+            db.query(updateSql, [hashedPassword, vname, nname], (err, results) => {
+                if (err) {
+                    console.error('Fehler beim Aktualisieren des Passworts:', err);
+                    return res.status(500).send('Fehler beim Aktualisieren des Passworts.');
+                }
+
+                res.status(200).json({ message: 'Passwort erfolgreich aktualisiert.' });
+            });
+        });
+    } catch (error) {
+        console.error('Serverfehler:', error);
+        res.status(500).send('Interner Serverfehler.');
+    }
+});
 
 app.listen(port, () => {
     console.log(`Backend läuft auf http://localhost:${port}`);
