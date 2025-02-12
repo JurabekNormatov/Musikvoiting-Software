@@ -58,11 +58,15 @@ export default {
 
     async voteSong(songId) {
       try {
-        const response = await axios.post('http://localhost:3000/api/vote', { songId })
-        console.log('Vote erfolgreich:', response.data)
-        this.fetchSongs()
+        const response = await axios.post('http://localhost:3000/api/vote', { 
+          songId, 
+          gastId: this.currentGastId 
+        });
+        console.log('Vote erfolgreich:', response.data);
+        this.fetchSongs();
       } catch (error) {
-        console.error('Fehler beim Voting:', error)
+        console.error('Fehler beim Voting:', error);
+        alert(error.response?.data?.error || 'Fehler beim Voting.');
       }
     },
 

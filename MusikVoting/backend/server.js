@@ -109,28 +109,54 @@ app.post('/api/gast', async (req, res) => {
 
 app.post('/api/vote', (req, res) => {
     const { songId } = req.body;
-
     if (!songId) {
         return res.status(400).send('Song-ID ist erforderlich.');
     }
 
-    const updateSql = `
-        UPDATE T_Musikwunsch 
-        SET votes_count = votes_count + 1
-        WHERE song_id = ?
-    `;
+    const now = new Date();
+    const datum = now.toISOString().split('T')[0]; // YYYY-MM-DD
+    const zeit = now.toTimeString().split(' ')[0]; // HH:MM:SS
 
-    db.query(updateSql, [songId], (err, results) => {
+    const getLastGastSql = `SELECT gast_id FROM T_Gast ORDER BY gast_id DESC LIMIT 1`;
+
+    db.query(getLastGastSql, (err, results) => {
         if (err) {
-            console.error('Fehler beim Hinzufügen eines Votes:', err);
-            return res.status(500).send('Fehler beim Hinzufügen eines Votes.');
+            console.error('Fehler beim Abrufen des letzten Gast-ID:', err);
+            return res.status(500).send('Fehler beim Abrufen des letzten Gast-ID.');
         }
 
-        if (results.affectedRows === 0) {
-            return res.status(404).send('Song nicht gefunden.');
-        }
+        const lastGastId = results.length > 0 ? results[0].gast_id : null;
 
-        res.status(200).json({ message: 'Vote erfolgreich hinzugefügt.' });
+        const updateVotesSql = `
+            UPDATE T_Musikwunsch 
+            SET votes_count = votes_count + 1
+            WHERE song_id = ?
+        `;
+
+        const insertVoteSql = `
+            INSERT INTO T_Vote (f_gast_id, f_song_id, datum, zeit)
+            VALUES (?, ?, ?, ?)
+        `;
+
+        db.query(updateVotesSql, [songId], (err, results) => {
+            if (err) {
+                console.error('Fehler beim Hinzufügen eines Votes:', err);
+                return res.status(500).send('Fehler beim Hinzufügen eines Votes.');
+            }
+
+            if (results.affectedRows === 0) {
+                return res.status(404).send('Song nicht gefunden.');
+            }
+
+            db.query(insertVoteSql, [lastGastId, songId, datum, zeit], (err, results) => {
+                if (err) {
+                    console.error('Fehler beim Speichern des Votes:', err);
+                    return res.status(500).send('Fehler beim Speichern des Votes.');
+                }
+
+                res.status(200).json({ message: 'Vote erfolgreich hinzugefügt.', voteId: results.insertId });
+            });
+        });
     });
 });
 
