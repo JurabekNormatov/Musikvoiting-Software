@@ -8,20 +8,24 @@ import HomeLink from '../components/HomeLink.vue'
       Neues Lied Hinzufügen +
     </button>
 
-    <div v-if="showAddForm" class="mb-3 border p-3">
-      <h3>Neues Lied Hinzufügen</h3>
-      <input v-model="newSong.titel" placeholder="Titel" class="form-control mb-2" />
-      <input v-model="newSong.bandname" placeholder="Bandname" class="form-control mb-2" />
-      <select v-model="newSong.genre" class="form-control mb-2">
-        <option value="">Genre wählen</option>
-        <option value="Rock">Rock</option>
-        <option value="Pop">Pop</option>
-        <option value="Hip-Hop">Hip-Hop</option>
-        <option value="Klassik">Klassik</option>
-        <option value="Unbekannt">Unbekannt</option>
-      </select>
-      <button @click="addSong" class="btn btn-success">Hinzufügen</button>
-      <button @click="showAddForm = false" class="btn btn-secondary ml-2">Abbrechen</button>
+    <div v-if="showAddForm" class="modal-overlay">
+      <div class="modal-content">
+        <h3>Neues Lied Hinzufügen</h3>
+        <input v-model="newSong.titel" placeholder="Titel" class="form-control mb-2" />
+        <input v-model="newSong.bandname" placeholder="Bandname" class="form-control mb-2" />
+        <select v-model="newSong.genre" class="form-control mb-2">
+          <option value="">Genre wählen</option>
+          <option value="Rock">Rock</option>
+          <option value="Pop">Pop</option>
+          <option value="Hip-Hop">Hip-Hop</option>
+          <option value="Klassik">Klassik</option>
+          <option value="Unbekannt">Unbekannt</option>
+        </select>
+        <div class="btn-group">
+          <button @click="addSong" class="btn-modal btn-success">Hinzufügen</button>
+          <button @click="showAddForm = false" class="btn-modal btn-abort">Abbrechen</button>
+        </div>
+      </div>
     </div>
     <table class="table border-success">
       <thead>
@@ -136,4 +140,59 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  width: 500px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-modal {
+  font-size: 16px;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  min-width: 200px;
+  margin: 5px;
+  font-weight: 500;
+}
+
+.btn-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+.btn-abort {
+  background-color: #dc3545;
+  color: white;
+}
+.btn-abort:hover {
+  background-color: #c82333;
+}
+</style>
