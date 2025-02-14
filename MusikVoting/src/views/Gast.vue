@@ -59,6 +59,14 @@ export default {
   data() {
     return {
       songs: [],
+      sortOrder: 'desc',
+    }
+  },
+  computed: {
+    songs() {
+      return [...this.songs].sort((a, b) => {
+        return this.sortOrder === 'asc' ? a.votes_count - b.votes_count : b.votes_count - a.votes_count
+      })
       showAddForm: false,
       newSong: {
         titel: '',
@@ -79,11 +87,15 @@ export default {
 
     async voteSong(songId) {
       try {
-        const response = await axios.post('http://localhost:3000/api/vote', { songId })
+        const response = await axios.post('http://localhost:3000/api/vote', {
+          songId,
+          gastId: this.currentGastId,
+        })
         console.log('Vote erfolgreich:', response.data)
         this.fetchSongs()
       } catch (error) {
         console.error('Fehler beim Voting:', error)
+        alert(error.response?.data?.error || 'Fehler beim Voting.')
       }
     },
 
