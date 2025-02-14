@@ -37,6 +37,28 @@ app.get('/api/musikwuensche', (req, res) => {
     });
 });
 
+app.post('/api/musikwuensche', (req, res) => {
+    const { titel, bandname, genre } = req.body;
+    if (!titel || !genre) {
+        return res.status(400).send('Titel und Genre sind erforderlich.');
+    }
+    const insertSql = `
+    INSERT INTO T_Musikwunsch (titel, bandname, genre, votes_count)
+    VALUES (?, ?, ?, 0)
+  `;
+    db.query(insertSql, [titel, bandname || null, genre], (err, result) => {
+        if (err) {
+            console.error('Fehler beim Hinzufügen des Songs:', err);
+            return res.status(500).send('Hinzufügen des Songs fehlgeschlagen.');
+        }
+        res.status(201).json({
+            message: 'Song erfolgreich hinzugefügt.',
+            songId: result.insertId
+        });
+    });
+});
+
+
 app.get('/api/playlist', (req, res) => {
     const sql = `
             SELECT ps.position, m.titel, m.genre, m.bandname
