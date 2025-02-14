@@ -60,15 +60,13 @@ export default {
     return {
       songs: [],
       sortOrder: 'desc',
+      showAddForm: false,
+      newSong: {
+        titel: '',
+        bandname: '',
+        genre: '',
+      },
     }
-  },
-  computed: {
-    showAddForm: false,
-    newSong: {
-      titel: '',
-      bandname: '',
-      genre: '',
-    },
   },
   methods: {
     async fetchSongs() {
