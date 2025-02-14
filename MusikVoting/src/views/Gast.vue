@@ -63,17 +63,12 @@ export default {
     }
   },
   computed: {
-    songs() {
-      return [...this.songs].sort((a, b) => {
-        return this.sortOrder === 'asc' ? a.votes_count - b.votes_count : b.votes_count - a.votes_count
-      })
-      showAddForm: false,
-      newSong: {
-        titel: '',
-        bandname: '',
-        genre: '',
-      },
-    }
+    showAddForm: false,
+    newSong: {
+      titel: '',
+      bandname: '',
+      genre: '',
+    },
   },
   methods: {
     async fetchSongs() {
@@ -127,6 +122,14 @@ export default {
         alert(error.response?.data || 'Fehler beim Hinzufügen des Songs.')
       }
     },
+  },
+
+  songs() {
+    return [...this.songs].sort((a, b) => {
+      return this.sortOrder === 'asc'
+        ? a.votes_count - b.votes_count
+        : b.votes_count - a.votes_count
+    })
   },
 
   mounted() {
