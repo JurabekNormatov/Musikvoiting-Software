@@ -1,6 +1,6 @@
 <script setup>
 import HomeLink from '../components/HomeLink.vue'
-</script>
+</script>              
 
 <template>
   <div class="vh-100">
@@ -35,7 +35,9 @@ import HomeLink from '../components/HomeLink.vue'
     <HomeLink />
   </div>
 </template>
-
+<script setup>
+import style from '../assets/style.css'
+</script>    
 <script>
 import axios from 'axios'
 

@@ -47,6 +47,9 @@ import HomeLink from '../components/HomeLink.vue'
       text-align: center;         /* Textausrichtung */
     }
 </style>
+<script setup>
+import style from '../assets/style.css'
+</script>    
 <script>
 import axios from 'axios'
 
