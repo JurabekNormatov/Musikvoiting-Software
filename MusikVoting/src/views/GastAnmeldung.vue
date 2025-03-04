@@ -34,7 +34,19 @@ import HomeLink from '../components/HomeLink.vue'
     <HomeLink />
   </div>
 </template>
-
+<style>
+.box {
+      background-color: #3498db;  /* Hintergrundfarbe */
+      width: 300px;               /* Breite der Box */
+      height: 200px;              /* Höhe der Box */
+      margin: 20px;               /* Abstand rund um die Box */
+      padding: 20px;              /* Innenabstand der Box */
+      border: 2px solid #2980b9;  /* Rand der Box */
+      color: white;               /* Textfarbe */
+      font-family: Arial, sans-serif; /* Schriftart */
+      text-align: center;         /* Textausrichtung */
+    }
+</style>
 <script>
 import axios from 'axios'
 

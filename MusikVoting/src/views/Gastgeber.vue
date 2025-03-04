@@ -23,7 +23,9 @@ import HomeLink from '../components/HomeLink.vue'
     <HomeLink />
   </div>
 </template>
+<style>
 
+</style>
 <script>
 import axios from 'axios'
 
