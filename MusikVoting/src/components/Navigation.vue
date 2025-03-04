@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box1">
     <div>
       <div class="mb-3">
         <button @click="goToGastgeber" class="btn btn-success w-100">Gastgeber</button>

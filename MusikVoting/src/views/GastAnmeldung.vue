@@ -3,6 +3,7 @@ import HomeLink from '../components/HomeLink.vue'
 </script>
 
 <template>
+  <div class="box"></div>
   <div class="box1">
     <div class="card p-4 shadow-lg" style="width: 400px">
       <p v-if="errorMessage" class="text-danger text-center mb-3">{{ errorMessage }}</p>
@@ -35,21 +36,8 @@ import HomeLink from '../components/HomeLink.vue'
   </div>
 </template>
 <style>
-.box {
-      background-color: #3498db;  /* Hintergrundfarbe */
-      width: 300px;               /* Breite der Box */
-      height: 200px;              /* Höhe der Box */
-      margin: 20px;               /* Abstand rund um die Box */
-      padding: 20px;              /* Innenabstand der Box */
-      border: 2px solid #2980b9;  /* Rand der Box */
-      color: white;               /* Textfarbe */
-      font-family: Arial, sans-serif; /* Schriftart */
-      text-align: center;         /* Textausrichtung */
-    }
 </style>
-<script setup>
-import style from '../assets/style.css'
-</script>    
+
 <script>
 import axios from 'axios'
 

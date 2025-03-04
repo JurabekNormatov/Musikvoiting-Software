@@ -3,6 +3,7 @@ import HomeLink from '../components/HomeLink.vue'
 </script>
 
 <template>
+  <div class="box"></div>
   <div class="box1">
     <div>
       <input

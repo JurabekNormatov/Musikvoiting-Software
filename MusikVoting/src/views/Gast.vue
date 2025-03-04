@@ -3,7 +3,8 @@ import HomeLink from '../components/HomeLink.vue'
 </script>              
 
 <template>
-  <div class="vh-100">
+  <div class="box"></div>
+  <div class="box1">
     <table class="table border-success">
       <thead>
         <tr>
@@ -35,9 +36,7 @@ import HomeLink from '../components/HomeLink.vue'
     <HomeLink />
   </div>
 </template>
-<script setup>
-import style from '../assets/style.css'
-</script>    
+
 <script>
 import axios from 'axios'
 
