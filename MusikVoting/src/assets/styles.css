@@ -11,7 +11,7 @@ h2 {
   padding-bottom: 20px;
 }
 .back{
-  padding-top: 100px;
+  padding-top: 50px;
 }
 table {
   width: 100%; /* Tabelle füllt die gesamte Breite des Containers */
@@ -30,7 +30,7 @@ table td {
   background-size: cover; 
   background-position: top center;
   width: 1000px;
-  height: 200px;
+  height: 350px;
   margin-left: auto;
   margin-right: auto;
   padding: 20px;
@@ -39,7 +39,7 @@ table td {
   background-color: #ff6347;
   width: 1000px;
   height:auto;
-  min-height: 150px;
+  min-height: 120px;
   margin-left: auto;
   margin-right: auto;
   padding: 20px;
@@ -47,7 +47,7 @@ table td {
 .box1 {
   background-color: #aaaaaa;
   width: 640px;
-  min-height: 150px;
+  min-height: 120px;
   margin-left: auto;
   margin-right: auto;
   padding-top: 20px;
@@ -128,7 +128,7 @@ div1 {
   background-size: cover; 
   background-position: bottom center;
   width: 1000px;
-  height: 100px;
+  height: 150px;
   margin-left: auto;
   margin-right: auto;
   padding: 20px;
