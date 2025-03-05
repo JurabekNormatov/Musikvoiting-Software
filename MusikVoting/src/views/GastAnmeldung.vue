@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-content-center align-items-center vh-100 flex-column">
-    <div class="card p-4 shadow-lg" style="width: 400px">
+    <div class="card p-4 border-success" style="width: 400px">
       <p v-if="errorMessage" class="text-danger text-center mb-3">{{ errorMessage }}</p>
 
       <form v-if="!showPasswordChangeForm" @submit.prevent="submitForm">
@@ -33,7 +33,7 @@
           />
         </div>
 
-        <a href="#" @click.prevent="showPasswordChangeForm = true" class="text-primary">
+        <a href="#" @click.prevent="showPasswordChangeForm = true" class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
           Passwort ändern
         </a>
 
@@ -84,7 +84,7 @@
         <button
           type="button"
           @click="showPasswordChangeForm = false"
-          class="btn btn-secondary w-100 mt-2"
+          class="btn btn-success w-100 mt-2"
         >
           Zurück zur Anmeldung
         </button>

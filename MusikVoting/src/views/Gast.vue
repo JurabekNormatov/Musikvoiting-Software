@@ -3,30 +3,39 @@ import HomeLink from '../components/HomeLink.vue'
 </script>
 
 <template>
-  <div class="vh-100">
-    <button @click="showAddForm = true" class="btn btn-success mb-3">
+  <div class="d-flex justify-content-start flex-column vh-100 position-relative">
+    <button @click="showAddForm = true" class="btn btn-success mb-5 mt-5 d-flex mx-auto w-25 justify-content-center ">
       Neues Lied Hinzufügen +
     </button>
 
-    <div v-if="showAddForm" class="modal-overlay">
-      <div class="modal-content">
-        <h3>Neues Lied Hinzufügen</h3>
-        <input v-model="newSong.titel" placeholder="Titel" class="form-control mb-2" />
-        <input v-model="newSong.bandname" placeholder="Bandname" class="form-control mb-2" />
-        <select v-model="newSong.genre" class="form-control mb-2">
-          <option value="">Genre wählen</option>
-          <option value="Rock">Rock</option>
-          <option value="Pop">Pop</option>
-          <option value="Hip-Hop">Hip-Hop</option>
-          <option value="Klassik">Klassik</option>
-          <option value="Unbekannt">Unbekannt</option>
-        </select>
-        <div class="btn-group">
-          <button @click="addSong" class="btn-modal btn-success">Hinzufügen</button>
-          <button @click="showAddForm = false" class="btn-modal btn-abort">Abbrechen</button>
+    <div v-if="showAddForm" class="modal fade show d-block" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content p-4">
+          <div class="modal-header d-flex justify-content-center">
+            <h2 class="modal-title">Neues Lied Hinzufügen</h2>
+          </div>
+          <div class="modal-body">
+            <input v-model="newSong.titel" placeholder="Titel" class="form-control mb-2 custom-input shadow-none border-success" />
+            <input v-model="newSong.bandname" placeholder="Bandname" class="form-control mb-2 custom-input shadow-none border-success" />
+            <select v-model="newSong.genre" class="form-control custom-input shadow-none border-success">
+              <option value="">Genre wählen</option>
+              <option value="Rock">Rock</option>
+              <option value="Pop">Pop</option>
+              <option value="Hip-Hop">Hip-Hop</option>
+              <option value="Klassik">Klassik</option>
+              <option value="Unbekannt">Unbekannt</option>
+            </select>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button @click="addSong" class="btn btn-success">Hinzufügen</button>
+            <button @click="showAddForm = false" class="btn btn-success">Abbrechen</button>
+          </div>
         </div>
       </div>
     </div>
+
+    <div v-if="showAddForm" class="modal-backdrop fade show"></div>
+
     <table class="table border-success">
       <thead>
         <tr>
@@ -54,6 +63,7 @@ import HomeLink from '../components/HomeLink.vue'
     <HomeLink />
   </div>
 </template>
+
 
 <script>
 import axios from 'axios'
@@ -147,59 +157,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
-.modal-content {
-  width: 500px;
-  background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.btn-group {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.btn-modal {
-  font-size: 16px;
-  padding: 6px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-  min-width: 200px;
-  margin: 5px;
-  font-weight: 500;
-}
-
-.btn-success {
-  background-color: #28a745;
-  color: white;
-}
-
-.btn-success:hover {
-  background-color: #218838;
-}
-
-.btn-abort {
-  background-color: #dc3545;
-  color: white;
-}
-.btn-abort:hover {
-  background-color: #c82333;
-}
-</style>
