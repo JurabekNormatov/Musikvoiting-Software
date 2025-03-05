@@ -6,6 +6,15 @@ body {
     padding: 20px;
 }
 
+.box {
+  background-image: url("img/hintergrund.jpg");
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 200px;
+  padding: 20px;
+}
+
 .box1 {
   background-color: orange;
   width: 600px;
