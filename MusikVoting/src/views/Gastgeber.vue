@@ -20,7 +20,6 @@ import HomeLink from '../components/HomeLink.vue'
     </div>
     <div class="box3">
       <button @click="handleButtonClick('Delete')" class="btn btn-success">Delete</button>
-      <button @click="VoteUp" class="btn btn-success">VoteUp</button>
     </div>
     <div>
     <HomeLink />

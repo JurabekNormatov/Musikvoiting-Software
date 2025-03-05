@@ -4,7 +4,7 @@ import HomeLink from '../components/HomeLink.vue'
 
 <template>
   <div class="boxtopbg"></div>
-  <div class="boxmusic"></div>
+  <div class="boxmusic"></div>  
 
   <div class="d-flex justify-content-center align-items-center vh-100 flex-column">
     <div class="box1">
@@ -13,30 +13,30 @@ import HomeLink from '../components/HomeLink.vue'
       <form @submit.prevent="submitForm">
         <h2 class="form-title text-center mb-4">Gast Anmeldung</h2>
 
-        <div class="mb-3">
+        <div class="">
           <input
             type="text"
             v-model="gast.vname"
             placeholder="Vorname"
-            class="formcontrol"
+            class=""
           />
         </div>
 
-        <div class="mb-3">
+        <div class="">
           <input
             type="text"
             v-model="gast.nname"
             placeholder="Nachname"
-            class="form-control custom-input shadow-none border-success"
+            class=""
           />
         </div>
 
-        <div class="mb-3">
+        <div class="">
           <input
             type="password"
             v-model="gast.password"
             placeholder="Kennwort"
-            class="form-control custom-input shadow-none border-success"
+            class=""
           />
         </div>
 
@@ -98,7 +98,6 @@ import HomeLink from '../components/HomeLink.vue'
       </form>
       <HomeLink />
     </div>
-    <HomeLink />
   </div>
   <div class="boxbotbg"></div>
 </template>
