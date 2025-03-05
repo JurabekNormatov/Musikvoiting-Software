@@ -7,9 +7,11 @@ body {
 }
 h2 {
   margin: 0;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 .back{
-  margin: 10px;
+  padding-top: 100px;
 }
 table {
   width: 100%; /* Tabelle füllt die gesamte Breite des Containers */
@@ -48,6 +50,7 @@ table td {
   min-height: 150px;
   margin-left: auto;
   margin-right: auto;
+  padding-top: 20px;
   padding-right: 200px;
   padding-left: 200px;
   text-align: center;
@@ -72,9 +75,7 @@ div1 {
   
   /* Div2 und Div3 nebeneinander */
 .box2 {
-  display: block; /* Positioniert sie nebeneinander */
-  width: 30%; /* Gib beiden divs fast die Hälfte der Breite */
-  float: left;
+  display: flex; /* Positioniert sie nebeneinander */
 }
 .box3 {
   display: block; /* Positioniert sie nebeneinander */
@@ -91,11 +92,9 @@ div1 {
 .box2 button {
   display: block;
   width: 100%; /* Macht die Buttons so breit wie der div2-Container */
-  margin-top: 10px; /* Abstand zwischen den Buttons */
   text-align: left; /* Links ausgerichtet */
   background-color: #444444;
   color:white;
-  border: 0;
   height: 40px;
   text-align: center;
 }

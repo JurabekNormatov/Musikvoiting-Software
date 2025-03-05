@@ -17,8 +17,6 @@ import HomeLink from '../components/HomeLink.vue'
     <div class="box2">
       <button @click="handleButtonClick('Add')" class="btn btn-success">Add</button>
       <button @click="goToTop5" class="btn btn-success">Top 5</button>
-    </div>
-    <div class="box3">
       <button @click="handleButtonClick('Delete')" class="btn btn-success">Delete</button>
     </div>
     <div>
