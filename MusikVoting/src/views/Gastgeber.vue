@@ -3,7 +3,8 @@ import HomeLink from '../components/HomeLink.vue'
 </script>
 
 <template>
-  <div class="box"></div>
+  <div class="boxtopbg"></div>
+  <div class="boxmusic"></div>
   <div class="box1">
     <div>
       <input
@@ -21,8 +22,11 @@ import HomeLink from '../components/HomeLink.vue'
       <button @click="handleButtonClick('Delete')" class="btn btn-success">Delete</button>
       <button @click="VoteUp" class="btn btn-success">VoteUp</button>
     </div>
+    <div>
     <HomeLink />
+    </div>
   </div>
+  <div class="boxbotbg"></div>
 </template>
 <style>
 

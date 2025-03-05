@@ -3,8 +3,8 @@ import HomeLink from '../components/HomeLink.vue'
 </script>              
 
 <template>
-  <div class="box"></div>
-  <div class="box1">
+  <div class="boxtopbg"></div>
+  <div class="boxmusic">
     <table class="table border-success">
       <thead>
         <tr>
@@ -33,8 +33,29 @@ import HomeLink from '../components/HomeLink.vue'
         </tr>
       </tbody>
     </table>
-    <HomeLink />
   </div>
+  <div class="box1">
+    <div>
+      <input
+        v-model="playlistName"
+        type="text"
+        placeholder="Add a Songname, Bandname, Genres"
+        class="formcontrol"
+      />
+    </div>
+    <div class="box2">
+      <button @click="handleButtonClick('Add')" class="btn btn-success">Add</button>
+      <button @click="goToTop5" class="btn btn-success">Top 5</button>
+    </div>
+    <div class="box3">
+      <button @click="handleButtonClick('Delete')" class="btn btn-success">Delete</button>
+      <button @click="VoteUp" class="btn btn-success">VoteUp</button>
+    </div>
+    <div>
+    <HomeLink />
+    </div>
+  </div>
+  <div class="boxbotbg"></div>
 </template>
 
 <script>

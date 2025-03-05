@@ -3,13 +3,13 @@ import HomeLink from '../components/HomeLink.vue'
 </script>
 
 <template>
-  <div class="box"></div>
+  <div class="boxtopbg"></div>
+  <div class="boxmusic"></div>
   <div class="box1">
-    <div class="card p-4 shadow-lg" style="width: 400px">
       <p v-if="errorMessage" class="text-danger text-center mb-3">{{ errorMessage }}</p>
 
       <form @submit.prevent="submitForm">
-        <h2 class="form-title text-center mb-4">Gast Anmeldung</h2>
+        <h2 >Gast Anmeldung</h2>
 
         <div class="mb-3">
           <input
@@ -31,9 +31,10 @@ import HomeLink from '../components/HomeLink.vue'
 
         <button type="submit" class="btn btn-success w-100">Anmelden</button>
       </form>
+      <HomeLink />
     </div>
-    <HomeLink />
-  </div>
+  
+  <div class="boxbotbg"></div>
 </template>
 <style>
 </style>

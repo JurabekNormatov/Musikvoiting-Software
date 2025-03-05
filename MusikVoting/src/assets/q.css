@@ -1,0 +1,136 @@
+body {
+    background-color: white;
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+}
+h2 {
+  margin: 0;
+}
+
+table {
+  width: 100%; /* Tabelle füllt die gesamte Breite des Containers */
+  border-collapse: collapse; /* Entfernt den Abstand zwischen den Zellen */
+}
+
+/* Zellen stilisieren */
+table td {
+  padding: 10px;
+  border: 1px solid #ddd; /* Beispiel für einen einfachen Rand */
+}
+
+.boxtopbg {
+  background-image: url("../img/Hintergrund.jpg");
+    background-repeat: no-repeat; 
+      background-size: cover; 
+      background-position: top center;
+    width: 1000px;
+    height: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+}
+.boxmusic {
+  background-color: #ff6347;
+  width: 1000px;
+  height:auto;
+  min-height: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+}
+.box1 {
+  background-color: #aaaaaa;
+  width: 640px;
+  height: 150px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+  padding-right: 200px;
+  padding-left: 200px;
+  text-align: center;
+}
+.formcontrol {
+    background-color: white;
+}
+/* Container für das gesamte Layout */
+div1 {
+    background-color: grey;
+    width: 80%; /* Oder eine fixe Breite nach Wunsch */
+    margin: 0 auto; /* Zentriert das div1 horizontal */
+    padding: 20px; /* Abstand innen */
+    box-sizing: border-box; /* Um das Padding korrekt zu berechnen */
+  }
+  
+  /* Formularfeld innerhalb von div1 */
+  input[type="text"] {
+    padding: 10px;
+    width: 100%; /* Macht das Eingabefeld so breit wie der Container */
+    box-sizing: border-box; /* Um das Padding korrekt zu berechnen */
+    text-align: center;
+  }
+  
+  /* Div2 und Div3 nebeneinander */
+  .box2 {
+    display: block; /* Positioniert sie nebeneinander */
+    width: 30%; /* Gib beiden divs fast die Hälfte der Breite */
+    float: left;
+  }
+  .box3 {
+    display: block; /* Positioniert sie nebeneinander */
+    width: 30%; /* Gib beiden divs fast die Hälfte der Breite */
+    float:right;
+  }
+  .box5 {
+    display: block; /* Positioniert sie nebeneinander */
+    width: 30%; /* Gib beiden divs fast die Hälfte der Breite */
+    float: left;
+  }
+  /* Stile für die Buttons in div2 (linksbündig) */
+  .box2 button {
+    display: block;
+    width: 100%; /* Macht die Buttons so breit wie der div2-Container */
+    margin-top: 10px; /* Abstand zwischen den Buttons */
+    text-align: left; /* Links ausgerichtet */
+    background-color: #444444;
+    color:white;
+    border: 0;
+    height: 40px;
+    text-align: center;
+  }
+  
+  /* Stile für die Buttons in div3 (rechtsbündig) */
+  .box3 button {
+    display: block;
+    width: 100%; /* Macht die Buttons so breit wie der div3-Container */
+    margin-top: 10px; /* Abstand zwischen den Buttons */
+    text-align: right; /* Rechts ausgerichtet */
+    background-color: #444444;
+    color:white;
+    border: 0;
+    height: 40px;
+    text-align: center;
+  }
+  .box5 button {
+    display: block;
+    width: 100%; /* Macht die Buttons so breit wie der div3-Container */
+    margin-top: 10px; /* Abstand zwischen den Buttons */
+    text-align: right; /* Rechts ausgerichtet */
+    background-color: #444444;
+    color:white;
+    border: 0;
+    height: 40px;
+    text-align: center;
+  }
+  .boxbotbg {
+    background-image: url("../img/Hintergrund.jpg");
+      background-repeat: no-repeat; 
+        background-size: cover; 
+        background-position: bottom center;
+      width: 1000px;
+      height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+  }
