@@ -5,6 +5,9 @@ const cors = require('cors');
 const app = express();
 const port = 3000;
 
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 app.use(cors());
 app.use(express.json());
 
@@ -34,6 +37,28 @@ app.get('/api/musikwuensche', (req, res) => {
     });
 });
 
+app.post('/api/musikwuensche', (req, res) => {
+    const { titel, bandname, genre } = req.body;
+    if (!titel || !genre) {
+        return res.status(400).send('Titel und Genre sind erforderlich.');
+    }
+    const insertSql = `
+    INSERT INTO T_Musikwunsch (titel, bandname, genre, votes_count)
+    VALUES (?, ?, ?, 0)
+  `;
+    db.query(insertSql, [titel, bandname || null, genre], (err, result) => {
+        if (err) {
+            console.error('Fehler beim Hinzufügen des Songs:', err);
+            return res.status(500).send('Hinzufügen des Songs fehlgeschlagen.');
+        }
+        res.status(201).json({
+            message: 'Song erfolgreich hinzugefügt.',
+            songId: result.insertId
+        });
+    });
+});
+
+
 app.get('/api/playlist', (req, res) => {
     const sql = `
             SELECT ps.position, m.titel, m.genre, m.bandname
@@ -52,62 +77,108 @@ app.get('/api/playlist', (req, res) => {
     });
 });
 
-app.post('/api/gast', (req, res) => {
-    let { vname, nname } = req.body;
+app.post('/api/gast', async (req, res) => {
+    let { vname, nname, password } = req.body;
     vname = vname.trim();
     nname = nname.trim();
 
-    if (!vname || !nname) {
-        return res.status(400).send('Vorname und Nachname sind erforderlich.');
+    if (!vname || !nname || !password) {
+        return res.status(400).send('Vorname, Nachname und Kennwort sind erforderlich.');
     }
 
-    const checkSql = 'SELECT * FROM T_Gast WHERE vname = ? AND nname = ?';
-    db.query(checkSql, [vname, nname], (err, results) => {
-        if (err) {
-            console.error('Fehler bei der Überprüfung des Nutzers:', err);
-            return res.status(500).send('Fehler bei der Überprüfung des Nutzers.');
-        }
-
-        if (results.length > 0) {
-            return res.status(409).send('Nutzer mit diesem Namen existiert bereits.');
-        }
-
-        const insertSql = 'INSERT INTO T_Gast (vname, nname) VALUES (?, ?)';
-        db.query(insertSql, [vname, nname], (err, results) => {
+    try {
+        const checkSql = 'SELECT * FROM T_Gast WHERE vname = ? AND nname = ?';
+        db.query(checkSql, [vname, nname], async (err, results) => {
             if (err) {
-                console.error('Fehler bei der Anmeldung:', err);
-                return res.status(500).send('Fehler bei der Anmeldung.');
+                console.error('Fehler bei der Überprüfung des Nutzers:', err);
+                return res.status(500).send('Fehler bei der Überprüfung des Nutzers.');
             }
 
-            res.status(201).json({ message: 'Gast erfolgreich angemeldet.', gastId: results.insertId });
+            if (results.length > 0) {
+                // Nutzer existiert bereits → Passwort überprüfen
+                const user = results[0];
+                const passwordMatch = await bcrypt.compare(password, user.password_hash);
+
+                if (passwordMatch) {
+                    delete req.body.password;
+                    return res.status(200).json({
+                        message: 'Login erfolgreich!',
+                        gastId: user.gast_id
+                    });
+                } else {
+                    return res.status(401).send('Falsches Passwort.');
+                }
+            }
+
+            // Nutzer existiert nicht → Neuen Nutzer registrieren
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
+            const insertSql = 'INSERT INTO T_Gast (vname, nname, password_hash) VALUES (?, ?, ?)';
+
+            db.query(insertSql, [vname, nname, hashedPassword], (err, results) => {
+                if (err) {
+                    console.error('Fehler bei der Anmeldung:', err);
+                    return res.status(500).send('Fehler bei der Anmeldung.');
+                }
+                delete req.body.password;
+                res.status(201).json({ message: 'Gast erfolgreich angemeldet.', gastId: results.insertId });
+            });
         });
-    });
+    } catch (error) {
+        console.error('Serverfehler:', error);
+        res.status(500).send('Interner Serverfehler.');
+    }
 });
 
 app.post('/api/vote', (req, res) => {
     const { songId } = req.body;
-
     if (!songId) {
         return res.status(400).send('Song-ID ist erforderlich.');
     }
 
-    const updateSql = `
-        UPDATE T_Musikwunsch 
-        SET votes_count = votes_count + 1
-        WHERE song_id = ?
-    `;
+    const now = new Date();
+    const datum = now.toISOString().split('T')[0]; // YYYY-MM-DD
+    const zeit = now.toTimeString().split(' ')[0]; // HH:MM:SS
 
-    db.query(updateSql, [songId], (err, results) => {
+    const getLastGastSql = `SELECT gast_id FROM T_Gast ORDER BY gast_id DESC LIMIT 1`;
+
+    db.query(getLastGastSql, (err, results) => {
         if (err) {
-            console.error('Fehler beim Hinzufügen eines Votes:', err);
-            return res.status(500).send('Fehler beim Hinzufügen eines Votes.');
+            console.error('Fehler beim Abrufen des letzten Gast-ID:', err);
+            return res.status(500).send('Fehler beim Abrufen des letzten Gast-ID.');
         }
 
-        if (results.affectedRows === 0) {
-            return res.status(404).send('Song nicht gefunden.');
-        }
+        const lastGastId = results.length > 0 ? results[0].gast_id : null;
 
-        res.status(200).json({ message: 'Vote erfolgreich hinzugefügt.' });
+        const updateVotesSql = `
+            UPDATE T_Musikwunsch 
+            SET votes_count = votes_count + 1
+            WHERE song_id = ?
+        `;
+
+        const insertVoteSql = `
+            INSERT INTO T_Vote (f_gast_id, f_song_id, datum, zeit)
+            VALUES (?, ?, ?, ?)
+        `;
+
+        db.query(updateVotesSql, [songId], (err, results) => {
+            if (err) {
+                console.error('Fehler beim Hinzufügen eines Votes:', err);
+                return res.status(500).send('Fehler beim Hinzufügen eines Votes.');
+            }
+
+            if (results.affectedRows === 0) {
+                return res.status(404).send('Song nicht gefunden.');
+            }
+
+            db.query(insertVoteSql, [lastGastId, songId, datum, zeit], (err, results) => {
+                if (err) {
+                    console.error('Fehler beim Speichern des Votes:', err);
+                    return res.status(500).send('Fehler beim Speichern des Votes.');
+                }
+
+                res.status(200).json({ message: 'Vote erfolgreich hinzugefügt.', voteId: results.insertId });
+            });
+        });
     });
 });
 
@@ -266,6 +337,55 @@ app.delete('/api/playlist', (req, res) => {
     });
 });
 
+app.post('/api/change-password', async (req, res) => {
+    let { vname, nname, oldPassword, newPassword } = req.body;
+
+    vname = vname.trim();
+    nname = nname.trim();
+    oldPassword.bcrypt
+
+    if (!vname || !nname || !oldPassword || !newPassword) {
+        return res.status(400).send('Vorname, Nachname, altes und neues Passwort sind erforderlich.');
+    }
+
+    try {
+        const getUserSql = 'SELECT * FROM T_Gast WHERE vname = ? AND nname = ?';
+        db.query(getUserSql, [vname, nname], async (err, results) => {
+            if (err) {
+                console.error('Fehler beim Abrufen des Nutzers:', err);
+                return res.status(500).send('Fehler beim Abrufen des Nutzers.');
+            }
+
+            if (results.length === 0) {
+                return res.status(404).send('Nutzer nicht gefunden.');
+            }
+
+            const user = results[0];
+
+            // Passwort überprüfen
+            const passwordMatch = await bcrypt.compare(oldPassword, user.password_hash);
+            if (!passwordMatch) {
+                return res.status(401).send('Altes Passwort ist falsch.');
+            }
+
+            // Setzen neues Passworts 
+            const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+
+            const updateSql = 'UPDATE T_Gast SET password_hash = ? WHERE vname = ? AND nname = ?';
+            db.query(updateSql, [hashedPassword, vname, nname], (err, results) => {
+                if (err) {
+                    console.error('Fehler beim Aktualisieren des Passworts:', err);
+                    return res.status(500).send('Fehler beim Aktualisieren des Passworts.');
+                }
+
+                res.status(200).json({ message: 'Passwort erfolgreich aktualisiert.' });
+            });
+        });
+    } catch (error) {
+        console.error('Serverfehler:', error);
+        res.status(500).send('Interner Serverfehler.');
+    }
+});
 
 app.listen(port, () => {
     console.log(`Backend läuft auf http://localhost:${port}`);
