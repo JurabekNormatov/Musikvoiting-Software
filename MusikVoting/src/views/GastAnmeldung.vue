@@ -1,3 +1,7 @@
+<script setup>
+import HomeLink from '../components/HomeLink.vue'
+</script>
+
 <template>
   <div class="d-flex justify-content-center align-items-center vh-100 flex-column">
     <div class="card p-4 border-success" style="width: 400px">
@@ -90,6 +94,7 @@
         </button>
       </form>
     </div>
+  <HomeLink />
   </div>
 </template>
 
