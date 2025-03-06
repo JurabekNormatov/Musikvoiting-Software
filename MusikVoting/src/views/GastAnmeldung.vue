@@ -1,5 +1,14 @@
 <script setup>
 import HomeLink from '../components/HomeLink.vue'
+import useGastAnmeldung from '../composables/useGastAnmeldung.js'
+
+const {
+  gast,
+  showPasswordChangeForm,
+  errorMessage,
+  submitForm,
+  changePassword,
+} = useGastAnmeldung()
 </script>
 
 <template>
@@ -97,75 +106,3 @@ import HomeLink from '../components/HomeLink.vue'
   <HomeLink />
   </div>
 </template>
-
-<script>
-import axios from 'axios'
-
-export default {
-  name: 'GastAnmeldung',
-  data() {
-    return {
-      gast: {
-        vname: '',
-        nname: '',
-        password: '',
-        oldPassword: '',
-        newPassword: '',
-      },
-      showPasswordChangeForm: false,
-      errorMessage: '',
-    }
-  },
-  methods: {
-    async submitForm() {
-      this.gast.vname = this.gast.vname.trim()
-      this.gast.nname = this.gast.nname.trim()
-
-      if (!this.gast.vname || !this.gast.nname || !this.gast.password.trim()) {
-        this.errorMessage = 'Vorname, Nachname und Passwort dürfen nicht leer sein.'
-        return
-      }
-
-      try {
-        this.errorMessage = ''
-        const response = await axios.post('http://localhost:3000/api/gast', this.gast)
-        console.log('Erfolgreich angemeldet:', response.data)
-        this.$router.push({ name: 'Gast' })
-      } catch (error) {
-        this.errorMessage = error.response?.data || 'Ein unbekannter Fehler ist aufgetreten.'
-        console.error('Fehler bei der Anmeldung:', error)
-      }
-    },
-
-    async changePassword() {
-      if (
-        !this.gast.vname.trim() ||
-        !this.gast.nname.trim() ||
-        !this.gast.oldPassword.trim() ||
-        !this.gast.newPassword.trim()
-      ) {
-        this.errorMessage = 'Bitte füllen Sie alle Felder aus.'
-        return
-      }
-
-      try {
-        const response = await axios.post('http://localhost:3000/api/change-password', {
-          vname: this.gast.vname.trim(),
-          nname: this.gast.nname.trim(),
-          oldPassword: this.gast.oldPassword.trim(),
-          newPassword: this.gast.newPassword.trim(),
-        })
-
-        alert(response.data.message)
-
-        this.showPasswordChangeForm = false
-        this.gast.oldPassword = ''
-        this.gast.newPassword = ''
-      } catch (error) {
-        console.error('Fehler beim Ändern des Passworts:', error)
-        alert(error.response?.data || 'Passwortänderung fehlgeschlagen.')
-      }
-    },
-  },
-}
-</script>

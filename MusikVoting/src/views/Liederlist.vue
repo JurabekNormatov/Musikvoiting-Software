@@ -1,5 +1,8 @@
 <script setup>
 import HomeLink from '../components/HomeLink.vue'
+import useTopSongs from '../composables/useTopSongs.js'
+
+const { topSongs, playListName } = useTopSongs()
 </script>
 
 <template>
@@ -29,40 +32,3 @@ import HomeLink from '../components/HomeLink.vue'
     <HomeLink />
   </div>
 </template>
-
-<script>
-import axios from 'axios'
-
-export default {
-  name: 'Liederlist',
-  data() {
-    return {
-      topSongs: [],
-      playListName: '',
-    }
-  },
-  methods: {
-    async fetchTopSongs() {
-      try {
-        const response = await axios.get('http://localhost:3000/api/top-songs')
-        this.topSongs = response.data
-      } catch (error) {
-        console.error('Fehler beim Abrufen der Top-Songs:', error)
-      }
-    },
-
-    async fetchLastPLaylist() {
-      try {
-        const response = await axios.get('http://localhost:3000/api/playlist/latest')
-        this.playListName = response.data
-      } catch (error) {
-        console.error('Fehler beim Abrufen der letzten Playlist:', error)
-      }
-    },
-  },
-  mounted() {
-    this.fetchTopSongs()
-    this.fetchLastPLaylist()
-  },
-}
-</script>

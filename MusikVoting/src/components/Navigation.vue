@@ -1,3 +1,9 @@
+<script setup>
+import useNavigation from '../composables/useNavigation.js'
+
+const { goToGastgeber, goToGastAnmeldung } = useNavigation()
+</script>
+
 <template>
   <div class="d-flex justify-content-center align-items-center vh-100">
     <div>
@@ -10,20 +16,3 @@
     </div>
   </div>
 </template>
-
-
-<script>
-
-export default {
-  name: 'Navigation',
-  methods: {
-    goToGastgeber() {
-      this.$router.push({ name: 'Gastgeber' });
-    },
-    goToGastAnmeldung() {
-      this.$router.push({ name: 'GastAnmeldung' });
-    },
-  },
-
-};
-</script>

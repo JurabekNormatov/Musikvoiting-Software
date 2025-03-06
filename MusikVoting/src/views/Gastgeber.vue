@@ -1,5 +1,8 @@
 <script setup>
 import HomeLink from '../components/HomeLink.vue'
+import usePlaylist from '../composables/useGastgeberPage.js'
+
+const { playlistName, goToTop5, handleButtonClick } = usePlaylist()
 </script>
 
 <template>
@@ -20,81 +23,3 @@ import HomeLink from '../components/HomeLink.vue'
     <HomeLink />
   </div>
 </template>
-
-<script>
-import axios from 'axios'
-
-export default {
-  name: 'Gastgeber',
-  data() {
-    return {
-      playlistName: '',
-    }
-  },
-  methods: {
-    goToTop5() {
-      this.$router.push({ name: 'Liederlist' })
-    },
-    handleButtonClick(action) {
-        if (action === 'Add') {
-            this.addPlaylist();
-        } else if (action === 'Delete') {
-            this.deletePlaylist();
-        }
-    },
-    async addPlaylist() {
-      try {
-        if (!this.playlistName.trim()) {
-          return
-        }
-
-        const checkResponse = await axios.get(`http://localhost:3000/api/playlist/check`, {
-          params: { name: this.playlistName.trim(), gastgeberId: 1 },
-        })
-
-        if (checkResponse.data.exists) {
-          alert('Diese Playlist existiert bereits')
-          return
-        }
-
-        await axios.post('http://localhost:3000/api/playlist', {
-          name: this.playlistName.trim(),
-          gastgeberId: 1,
-        })
-
-        alert('Playlist hinzugefügt')
-        this.playlistName = ''
-      } catch (error) {
-        console.error('Fehler beim Hinzufügen einer Playlist', error)
-        alert('Hinzufügen einer Playlist fehlgeschlagen')
-      }
-    },
-    async deletePlaylist() {
-        try {
-            if (!this.playlistName.trim()) {
-                return;
-            }
-
-            const checkResponse = await axios.get(`http://localhost:3000/api/playlist/check`, {
-                params: { name: this.playlistName.trim(), gastgeberId: 1 },
-            });
-
-            if (!checkResponse.data.exists) {
-                alert('Diese Playlist existiert nicht');
-                return;
-            }
-
-            await axios.delete(`http://localhost:3000/api/playlist`, {
-                data: { name: this.playlistName.trim(), gastgeberId: 1 },
-            });
-
-            alert('Playlist gelöscht');
-            this.playlistName = '';
-        } catch (error) {
-            console.error('Fehler beim Löschen der Playlist', error);
-            alert('Löschen der Playlist fehlgeschlagen');
-        }
-    },
-  },
-}
-</script>
