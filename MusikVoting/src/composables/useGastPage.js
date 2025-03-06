@@ -2,15 +2,24 @@ import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 
 export default function useVoting() {
+
+  // Deklariert eine reaktive Variable für die Liste der Songs
   const songs = ref([])
+
+  // Deklariert eine reaktive Variable für die Sortierreihenfolge (aufsteigend oder absteigend)
   const sortOrder = ref('desc')
+
+  // Deklariert eine reaktive Variable, um das Anzeigen des Formulars zum Hinzufügen eines Songs zu steuern
   const showAddForm = ref(false)
+
+  // Deklariert ein reaktives Objekt für einen neuen Song, der hinzugefügt werden soll
   const newSong = ref({
     titel: '',
     bandname: '',
     genre: '',
   })
 
+  // Funktion zum Abrufen der Songs von der API
   async function fetchSongs() {
     try {
       const response = await axios.get('http://localhost:3000/api/musikwuensche')
@@ -20,6 +29,7 @@ export default function useVoting() {
     }
   }
 
+  // Funktion zum Abstimmen eines Songs
   async function voteSong(songId) {
     try {
       const response = await axios.post('http://localhost:3000/api/vote', { songId })
@@ -31,17 +41,7 @@ export default function useVoting() {
     }
   }
 
-  async function deleteSong(songId) {
-    try {
-      await axios.delete(`http://localhost:3000/api/musikwuensche/${songId}`)
-      console.log('Song erfolgreich gelöscht')
-      fetchSongs()
-    } catch (error) {
-      console.error('Fehler beim Löschen des Songs:', error)
-      alert(error.response?.data || 'Fehler beim Löschen des Songs.')
-    }
-  }
-
+  // Funktion zum Hinzufügen eines neuen Songs
   async function addSong() {
     try {
       await axios.post('http://localhost:3000/api/musikwuensche', {
@@ -60,18 +60,22 @@ export default function useVoting() {
     }
   }
 
+  // Funktion zum Umschalten des Formulars zum Hinzufügen eines Songs (anzeigen oder ausblenden)
   function toggleAddForm(value) {
     showAddForm.value = value
   }
 
+  // Computed Property zum Sortieren der Songs nach der Anzahl der Stimmen (abhängig von der Sortierreihenfolge)
   const sortedSongs = computed(() => {
     return [...songs.value].sort((a, b) => {
       return sortOrder.value === 'asc' ? a.votes_count - b.votes_count : b.votes_count - a.votes_count
     })
   })
 
+  // Lädt die Songs beim ersten Laden der Komponente
   onMounted(fetchSongs)
 
+  // Gibt alle Funktionen und Variablen zurück, die im Template verwendet werden
   return {
     songs: sortedSongs,
     showAddForm,

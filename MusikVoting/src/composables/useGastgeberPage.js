@@ -3,13 +3,19 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 
 export default function usePlaylist() {
+
+  // Deklariert eine reaktive Variable für den Namen der Playlist
   const playlistName = ref('')
+
+  // Holt den Router für Navigation zu anderen Seiten
   const router = useRouter()
 
+  // Funktion zur Navigation zur "Liederlist"-Seite
   const goToTop5 = () => {
     router.push({ name: 'Liederlist' })
   }
 
+  // Funktion zur Verarbeitung von Button-Klicks (Add oder Delete)
   const handleButtonClick = (action) => {
     if (action === 'Add') {
       addPlaylist()
@@ -18,6 +24,7 @@ export default function usePlaylist() {
     }
   }
 
+  // Funktion zum Hinzufügen einer neuen Playlist
   const addPlaylist = async () => {
     try {
       if (!playlistName.value.trim()) {
@@ -46,6 +53,7 @@ export default function usePlaylist() {
     }
   }
 
+  // Funktion zum Löschen einer Playlist
   const deletePlaylist = async () => {
     try {
       if (!playlistName.value.trim()) {
@@ -73,5 +81,6 @@ export default function usePlaylist() {
     }
   }
 
+  // Gibt alle Funktionen und Variablen zurück, die im Template verwendet werden
   return { playlistName, goToTop5, handleButtonClick }
 }

@@ -3,6 +3,8 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 
 export default function useGastAnmeldung() {
+
+  // Deklariert ein reaktives Objekt für die Benutzerdaten
   const gast = ref({
     vname: '',
     nname: '',
@@ -11,10 +13,16 @@ export default function useGastAnmeldung() {
     newPassword: '',
   })
 
+  // Deklariert eine reaktive Variable, um das Anzeigen des Passwortänderungsformulars zu steuern
   const showPasswordChangeForm = ref(false)
+
+  // Deklariert eine reaktive Variable für Fehlernachrichten
   const errorMessage = ref('')
+
+  // Holt den Router für Navigation nach der Anmeldung
   const router = useRouter()
 
+  // Funktion zum Absenden des Formulars
   async function submitForm() {
     gast.value.vname = gast.value.vname.trim()
     gast.value.nname = gast.value.nname.trim()
@@ -35,6 +43,7 @@ export default function useGastAnmeldung() {
     }
   }
 
+  // Funktion zum Ändern des Passworts
   async function changePassword() {
     if (
       !gast.value.vname.trim() ||
@@ -65,10 +74,12 @@ export default function useGastAnmeldung() {
     }
   }
 
+  // Funktion zum Umschalten des Passwortänderungsformulars
   function togglePasswordForm() {
     showPasswordChangeForm.value = !showPasswordChangeForm.value
   }
 
+  // Gibt alle Funktionen und Variablen zurück, die im Template verwendet werden
   return {
     gast,
     showPasswordChangeForm,

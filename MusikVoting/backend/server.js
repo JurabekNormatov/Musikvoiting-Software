@@ -12,6 +12,7 @@ const saltRounds = 10;
 app.use(cors());
 app.use(express.json());
 
+// Verbindung zur Datenbank herstellen
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -19,6 +20,7 @@ const db = mysql.createConnection({
     database: process.env.DB_NAME,
 });
 
+// Überprüfen, ob die Datenbankverbindung erfolgreich ist
 db.connect((err) => {
     if (err) {
         console.error('Datenbankverbindung fehlgeschlagen:', err);
@@ -27,6 +29,7 @@ db.connect((err) => {
     console.log('Mit der Datenbank verbunden.');
 });
 
+// Endpoint zum Abrufen aller Musikwünsche
 app.get('/api/musikwuensche', (req, res) => {
     const sql = 'SELECT * FROM T_Musikwunsch';
     db.query(sql, (err, results) => {
@@ -39,6 +42,7 @@ app.get('/api/musikwuensche', (req, res) => {
     });
 });
 
+// Endpoint zum Hinzufügen eines neuen Musikwunsches
 app.post('/api/musikwuensche', (req, res) => {
     const { titel, bandname, genre } = req.body;
     if (!titel || !genre) {
@@ -60,7 +64,7 @@ app.post('/api/musikwuensche', (req, res) => {
     });
 });
 
-
+// Endpoint zum Abrufen der Playlist
 app.get('/api/playlist', (req, res) => {
     const sql = `
             SELECT ps.position, m.titel, m.genre, m.bandname
@@ -79,6 +83,7 @@ app.get('/api/playlist', (req, res) => {
     });
 });
 
+// Endpoint zum Anmelden eines Gastes
 app.post('/api/gast', async (req, res) => {
     let { vname, nname, password } = req.body;
     vname = vname.trim();
@@ -131,6 +136,7 @@ app.post('/api/gast', async (req, res) => {
     }
 });
 
+// Endpoint zum Abstimmen für einen Song
 app.post('/api/vote', (req, res) => {
     const { songId } = req.body;
     if (!songId) {
@@ -184,6 +190,7 @@ app.post('/api/vote', (req, res) => {
     });
 });
 
+// Endpoint zum Abrufen der Top 5 Songs
 app.get('/api/top-songs', (req, res) => {
     const sql = `
             SELECT * 
@@ -201,33 +208,7 @@ app.get('/api/top-songs', (req, res) => {
     });
 });
 
-app.delete('/api/musikwuensche/:songId', (req, res) => {
-    const songId = req.params.songId;
-
-    const deleteVotesSql = 'DELETE FROM T_Vote WHERE f_song_id = ?';
-    const deleteSongSql = 'DELETE FROM T_Musikwunsch WHERE song_id = ?';
-
-    db.query(deleteVotesSql, [songId], (err, voteResults) => {
-        if (err) {
-            console.error('Fehler beim Löschen der Votes:', err);
-            return res.status(500).send('Fehler beim Löschen der Votes.');
-        }
-
-        db.query(deleteSongSql, [songId], (err, songResults) => {
-            if (err) {
-                console.error('Fehler beim Löschen des Songs:', err);
-                return res.status(500).send('Fehler beim Löschen des Songs.');
-            }
-
-            if (songResults.affectedRows === 0) {
-                return res.status(404).send('Song nicht gefunden.');
-            }
-
-            res.status(200).json({ message: 'Song erfolgreich gelöscht.' });
-        });
-    });
-});
-
+// Endpoint zum Hinzufügen einer Playlist
 app.post('/api/playlist', (req, res) => {
     const { name, gastgeberId } = req.body;
 
@@ -266,6 +247,7 @@ app.post('/api/playlist', (req, res) => {
     });
 });
 
+// Endpoint zum Überprüfen, ob eine Playlist existiert
 app.get('/api/playlist/check', (req, res) => {
     const { name, gastgeberId } = req.query;
 
@@ -285,7 +267,7 @@ app.get('/api/playlist/check', (req, res) => {
     });
 });
 
-
+// Endpoint zum Abrufen der letzten Playlist
 app.get('/api/playlist/latest', (req, res) => {
     const sql = `
         SELECT *
@@ -307,6 +289,7 @@ app.get('/api/playlist/latest', (req, res) => {
     });
 });
 
+// Endpoint zum Löschen einer Playlist
 app.delete('/api/playlist', (req, res) => {
     const { name, gastgeberId } = req.body;
 
@@ -339,6 +322,7 @@ app.delete('/api/playlist', (req, res) => {
     });
 });
 
+// Endpoint zum Ändern des Passworts eines Gastes
 app.post('/api/change-password', async (req, res) => {
     let { vname, nname, oldPassword, newPassword } = req.body;
 
@@ -389,6 +373,7 @@ app.post('/api/change-password', async (req, res) => {
     }
 });
 
+// Der Server läuft auf dem angegebenen Port
 app.listen(port, () => {
     console.log(`Backend läuft auf http://localhost:${port}`);
 });
