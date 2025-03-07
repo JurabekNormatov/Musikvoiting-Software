@@ -13,7 +13,7 @@ const {
 
 <template>
   <div class="d-flex justify-content-center align-items-center vh-100 flex-column">
-    <div class="card p-4 border-success" style="width: 400px">
+    <div class="card p-4 border-success w-25">
       <p v-if="errorMessage" class="text-danger text-center mb-3">{{ errorMessage }}</p>
 
       <form v-if="!showPasswordChangeForm" @submit.prevent="submitForm">

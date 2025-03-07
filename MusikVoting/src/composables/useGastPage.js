@@ -82,7 +82,6 @@ export default function useVoting() {
     newSong,
     addSong,
     voteSong,
-    deleteSong,
     toggleAddForm,
   }
 }
